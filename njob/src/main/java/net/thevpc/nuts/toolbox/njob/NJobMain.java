@@ -8,7 +8,7 @@ public class NJobMain implements NApplication {
 
 
     public static void main(String[] args) {
-        new NJobMain().runAndExit(args);
+        new NJobMain().run(NAppRunOptions.ofExit(args));
     }
 
     @Override
