@@ -342,7 +342,7 @@ public class NJobsSubCmd {
                 case "--weeks": {
                     cmd.withNextEntryValue((v, r) -> {
                         d.countType = ChronoUnit.WEEKS;
-                        d.count = v.asInt().get();
+                        d.count = v.asIntValue().get();
                     });
                     break;
                 }
@@ -350,7 +350,7 @@ public class NJobsSubCmd {
                 case "--months": {
                     cmd.withNextEntryValue((v, r) -> {
                         d.countType = ChronoUnit.MONTHS;
-                        d.count = v.asInt().get();
+                        d.count = v.asIntValue().get();
                     });
 
                     break;
@@ -358,7 +358,7 @@ public class NJobsSubCmd {
                 case "-l": {
                     cmd.withNextEntryValue((v, r) -> {
                         d.countType = null;
-                        d.count = v.asInt().get();
+                        d.count = v.asIntValue().get();
                     });
 
                     break;
