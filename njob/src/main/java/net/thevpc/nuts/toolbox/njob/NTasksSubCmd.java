@@ -154,7 +154,7 @@ public class NTasksSubCmd {
                 runLater.add(t -> t.setPriority(NPriority.NORMAL));
             } else {
                 if (cmd.peek().get().isNonOption() && !nameVisited) {
-                    String n = cmd.next("name").flatMap(NLiteral::asStringValue).get();
+                    String n = cmd.next("name").flatMap(NLiteral::asString).get();
                     runLater.add(t -> t.setName(n));
                 } else {
                     cmd.throwUnexpectedArgument();
@@ -443,18 +443,18 @@ public class NTasksSubCmd {
                 case "-w":
                 case "--weeks": {
                     d.countType = ChronoUnit.WEEKS;
-                    d.count = cmd.nextEntry().get().getValue().asIntValue().get();
+                    d.count = cmd.nextEntry().get().getValue().asInt().get();
                     break;
                 }
                 case "-m":
                 case "--months": {
                     d.countType = ChronoUnit.MONTHS;
-                    d.count = cmd.nextEntry().get().getValue().asIntValue().get();
+                    d.count = cmd.nextEntry().get().getValue().asInt().get();
                     break;
                 }
                 case "-l": {
                     d.countType = null;
-                    d.count = cmd.nextEntry().get().getValue().asIntValue().get();
+                    d.count = cmd.nextEntry().get().getValue().asInt().get();
                     break;
                 }
                 case "-u":
@@ -740,7 +740,7 @@ public class NTasksSubCmd {
     private NTask findTask(String pid, NCmdLine cmd) {
         NTask t = null;
         if (pid.startsWith("#")) {
-            int x = NLiteral.of(pid.substring(1)).asIntValue().orElse(-1);
+            int x = NLiteral.of(pid.substring(1)).asInt().orElse(-1);
             if (x >= 1) {
                 Object lastResults = NApp.of().getProperty("LastResults",NScopeType.SESSION).orNull();
                 if (lastResults instanceof NTask[] && x <= ((NTask[]) lastResults).length) {
