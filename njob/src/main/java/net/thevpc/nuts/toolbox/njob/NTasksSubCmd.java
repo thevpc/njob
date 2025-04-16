@@ -154,7 +154,7 @@ public class NTasksSubCmd {
                 runLater.add(t -> t.setPriority(NPriority.NORMAL));
             } else {
                 if (cmd.peek().get().isNonOption() && !nameVisited) {
-                    String n = cmd.next("name").flatMap(NLiteral::asString).get();
+                    String n = cmd.next("name").flatMap(NArg::asString).get();
                     runLater.add(t -> t.setName(n));
                 } else {
                     cmd.throwUnexpectedArgument();
