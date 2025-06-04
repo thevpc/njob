@@ -2,6 +2,8 @@ package net.thevpc.nuts.toolbox.njob;
 
 import net.thevpc.nuts.*;
 import net.thevpc.nuts.elem.NEDesc;
+import net.thevpc.nuts.elem.NElementParser;
+import net.thevpc.nuts.elem.NElementWriter;
 import net.thevpc.nuts.elem.NElements;
 import net.thevpc.nuts.NStoreType;
 import net.thevpc.nuts.io.NPath;
@@ -17,14 +19,9 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 public class NJobConfigStore {
-    private NSession session;
-    private NElements json;
     private NPath dbPath;
 
     public NJobConfigStore(NSession session) {
-        this.session = session;
-        json = NElements.of().json().setNtf(false);
-        json.setCompact(false);
         //ensure we always consider the latest config version
         dbPath = NApp.of().getVersionFolder(NStoreType.CONF, NJobConfigVersions.CURRENT)
                 .resolve("db");
@@ -63,7 +60,7 @@ public class NJobConfigStore {
 
     public <T> Stream<T> search(Class<T> type) {
         NPath f = getFile(getEntityName(type), "any").getParent();
-        NFunction<NPath, T> parse = NFunction.of((NPath x) -> json.parse(x, type)).withDesc(NEDesc.of("parse"));
+        NFunction<NPath, T> parse = NFunction.of((NPath x) -> NElementParser.ofJson().parse(x, type)).withDesc(NEDesc.of("parse"));
         return f.stream().filter(
                         NPredicate.of((NPath x) -> x.isRegularFile() && x.getName().endsWith(".json"))
                                 .withDesc(NEDesc.of("isRegularFile() && matches(*.json" + ")"))
@@ -75,7 +72,7 @@ public class NJobConfigStore {
     public <T> T load(Class<T> type, Object id) {
         NPath f = getFile(getEntityName(type), id);
         if (f.exists()) {
-            return json.parse(f, type);
+            return NElementParser.ofJson().parse(f, type);
         }
         return null;
     }
@@ -102,7 +99,8 @@ public class NJobConfigStore {
         }
         NPath objectFile = getObjectFile(o);
         objectFile.mkParentDirs();
-        json.setValue(o).println(objectFile);
+
+        NElementWriter.ofJson().setCompact(false).write(o, objectFile);
     }
 
     public String generateId(Class clz) {
