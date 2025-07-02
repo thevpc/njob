@@ -1,10 +1,9 @@
 package net.thevpc.nuts.toolbox.njob;
 
 import net.thevpc.nuts.*;
-import net.thevpc.nuts.elem.NEDesc;
+import net.thevpc.nuts.elem.NDescribableElementSupplier;
 import net.thevpc.nuts.elem.NElementParser;
 import net.thevpc.nuts.elem.NElementWriter;
-import net.thevpc.nuts.elem.NElements;
 import net.thevpc.nuts.NStoreType;
 import net.thevpc.nuts.io.NPath;
 import net.thevpc.nuts.toolbox.njob.model.Id;
@@ -60,10 +59,10 @@ public class NJobConfigStore {
 
     public <T> Stream<T> search(Class<T> type) {
         NPath f = getFile(getEntityName(type), "any").getParent();
-        NFunction<NPath, T> parse = NFunction.of((NPath x) -> NElementParser.ofJson().parse(x, type)).withDesc(NEDesc.of("parse"));
+        NFunction<NPath, T> parse = NFunction.of((NPath x) -> NElementParser.ofJson().parse(x, type)).redescribe(NDescribableElementSupplier.of("parse"));
         return f.stream().filter(
                         NPredicate.of((NPath x) -> x.isRegularFile() && x.getName().endsWith(".json"))
-                                .withDesc(NEDesc.of("isRegularFile() && matches(*.json" + ")"))
+                                .redescribe(NDescribableElementSupplier.of("isRegularFile() && matches(*.json" + ")"))
                 )
                 .map(parse)
                 .filterNonNull().stream();
