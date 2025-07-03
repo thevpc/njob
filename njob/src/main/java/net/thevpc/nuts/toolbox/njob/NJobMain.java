@@ -4,14 +4,15 @@ import net.thevpc.nuts.*;
 import net.thevpc.nuts.cmdline.NArg;
 import net.thevpc.nuts.cmdline.NCmdLine;
 
-public class NJobMain implements NApplication {
+@NApp.Info
+public class NJobMain {
 
 
     public static void main(String[] args) {
         NApp.builder(args).run();
     }
 
-    @Override
+    @NApp.Main
     public void run() {
         NSession session = NSession.of();
         JobServiceCmd ts = new JobServiceCmd(session);
