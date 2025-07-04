@@ -183,82 +183,83 @@ public class NTasksSubCmd {
     }
 
     public void runTaskUpdate(NCmdLine cmd) {
-        class Data{
+        class Data {
             List<NTask> tasks = new ArrayList<>();
             boolean list = false;
             boolean show = false;
             List<Consumer<NTask>> runLater = new ArrayList<>();
         }
-        Data d=new Data();
+        Data d = new Data();
         while (cmd.hasNext()) {
             NArg aa = cmd.peek().get();
-            switch(aa.key()) {
+            switch (aa.key()) {
                 case "--list":
                 case "-l": {
-                    cmd.withNextFlag((v) -> d.list=v.booleanValue());
+                    cmd.selector().withNextFlag((v) -> d.list = v.booleanValue()).anyMatch();
                     break;
                 }
                 case "--show":
                 case "-s": {
-                    cmd.withNextFlag((v) -> d.show=v.booleanValue());
+                    cmd.selector().withNextFlag((v) -> d.show = v.booleanValue()).anyMatch();
                     break;
                 }
                 case "--start": {
-                    cmd.withNextEntry((v) -> d.runLater.add(t -> t.setStartTime(new TimeParser().parseInstant(v.stringValue(), false))));
+                    cmd.selector().withNextEntry((v) -> d.runLater.add(t -> t.setStartTime(new TimeParser().parseInstant(v.stringValue(), false)))).anyMatch();
                     break;
                 }
                 case "-t":
                 case "--on":
                 case "--due": {
-                    cmd.withNextEntry((v) -> d.runLater.add(t -> t.setDueTime(TimePeriod.parseOpPeriodAsInstant(v.stringValue(), t.getDueTime(), true))));
+                    cmd.selector().withNextEntry((v) -> d.runLater.add(t -> t.setDueTime(TimePeriod.parseOpPeriodAsInstant(v.stringValue(), t.getDueTime(), true)))).anyMatch();
                     break;
                 }
                 case "--at": {
-                    cmd.withNextEntry((v) -> d.runLater.add(t -> t.setDueTime(new TimeParser().setTimeOnly(true).parseInstant(v.stringValue(), false))));
+                    cmd.selector().withNextEntry((v) -> d.runLater.add(t -> t.setDueTime(new TimeParser().setTimeOnly(true).parseInstant(v.stringValue(), false)))).anyMatch();
                     break;
                 }
                 case "--end": {
-                    cmd.withNextEntry((v) -> d.runLater.add(t -> t.setEndTime(new TimeParser().parseInstant(v.stringValue(), false))));
+                    cmd.selector().withNextEntry((v) -> d.runLater.add(t -> t.setEndTime(new TimeParser().parseInstant(v.stringValue(), false)))).anyMatch();
                     break;
                 }
                 case "--wip": {
-                    cmd.withNextTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.WIP)));
+                    cmd.selector().withNextTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.WIP))).anyMatch();
                     break;
                 }
                 case "--done": {
-                    cmd.withNextTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.DONE)));
+                    cmd.selector().withNextTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.DONE))).anyMatch();
                     break;
                 }
                 case "--cancel": {
-                    cmd.withNextTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.CANCELLED)));
+                    cmd.selector().withNextTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.CANCELLED))).anyMatch();
                     break;
                 }
                 case "--todo": {
-                    cmd.withNextTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.TODO)));
+                    cmd.selector().withNextTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.TODO))).anyMatch();
                     break;
                 }
                 case "--high": {
-                    cmd.withNextTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.HIGH)));
+                    cmd.selector().withNextTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.HIGH))).anyMatch();
                     break;
                 }
                 case "--critical": {
-                    cmd.withNextTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.CRITICAL)));
+                    cmd.selector().withNextTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.CRITICAL))).anyMatch();
                     break;
                 }
                 case "--normal": {
-                    cmd.withNextTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.NORMAL)));
+                    cmd.selector().withNextTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.NORMAL))).anyMatch();
                     break;
                 }
                 case "++P":
                 case "++prio":
                 case "--prio++": {
-                    cmd.withNextTrueFlag((v) -> d.runLater.add(t -> t.setPriority((t.getPriority() == null ? NPriority.NORMAL : t.getPriority()).higher())));
+                    cmd.selector().withNextTrueFlag((v) -> d.runLater.add(t -> t.setPriority((t.getPriority() == null ? NPriority.NORMAL : t.getPriority()).higher())))
+                            .anyMatch();
                     break;
                 }
                 case "--P":
                 case "--prio":
                 case "--prio--": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         if (!aa.key().equals("--prio")) {
                             v = null;
                         }
@@ -268,62 +269,62 @@ public class NTasksSubCmd {
                             NPriority pp = NPriority.parse(v.stringValue());
                             d.runLater.add(t -> t.setPriority(pp));
                         }
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "--status": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         d.runLater.add(t -> t.setStatus(NTaskStatus.parse(v.stringValue())));
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-d":
                 case "--duration": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         d.runLater.add(t -> t.setDuration(TimePeriod.parse(v.stringValue(), false)));
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-n":
                 case "--name": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         d.runLater.add(t -> t.setName(v.stringValue()));
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-f":
                 case "--flag": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         NFlag f = NFlag.parse(v.stringValue());
                         d.runLater.add(t -> t.setFlag(f));
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-j":
                 case "--job": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         NJob job = service.jobs().getJob(v.stringValue());
                         if (job == null) {
                             cmd.throwError(NMsg.ofC("invalid job %s", v));
                         }
                         d.runLater.add(t -> t.setJobId(job.getId()));
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-T":
                 case "--parent": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         NTask parentTask = service.tasks().getTask(v.stringValue());
                         if (parentTask == null) {
                             cmd.throwError(NMsg.ofC("invalid parent task %s", v));
                         }
                         d.runLater.add(t -> t.setParentTaskId(parentTask.getId()));
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-P":
                 case "--priority": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         d.runLater.add(t -> {
                             NPriority p = t.getPriority();
                             if (v.stringValue().equalsIgnoreCase("higher")) {
@@ -335,11 +336,11 @@ public class NTasksSubCmd {
                             }
                             t.setPriority(p);
                         });
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "--for": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         d.runLater.add(t -> {
                             Instant u = TimePeriod.parseOpPeriodAsInstant(v.stringValue(), t.getDueTime(), true);
                             if (u != null) {
@@ -348,27 +349,27 @@ public class NTasksSubCmd {
                                 t.setProject(v.stringValue());
                             }
                         });
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-p":
                 case "--project": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         d.runLater.add(t -> t.setProject(v.stringValue()));
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-o":
                 case "--obs": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         d.runLater.add(t -> t.setObservations(v.stringValue()));
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-o+":
                 case "--obs+":
                 case "+obs": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.selector().withNextEntry((v) -> {
                         d.runLater.add(t -> {
                             String so = t.getObservations();
                             if (so == null) {
@@ -382,7 +383,7 @@ public class NTasksSubCmd {
                             so = so.trim();
                             t.setObservations(so);
                         });
-                    });
+                    }).anyMatch();
                     break;
                 }
                 default: {
@@ -427,7 +428,7 @@ public class NTasksSubCmd {
     }
 
     private void runTaskList(NCmdLine cmd) {
-        class Data{
+        class Data {
             TimespanPattern hoursPerDay = TimespanPattern.WORK;
             int count = 100;
             NJobGroup groupBy = null;
@@ -436,10 +437,10 @@ public class NTasksSubCmd {
             Predicate<NTask> whereFilter = null;
             NTaskStatusFilter status = null;
         }
-        Data d=new Data();
+        Data d = new Data();
         while (cmd.hasNext()) {
             NArg aa = cmd.peek().get();
-            switch(aa.key()) {
+            switch (aa.key()) {
                 case "-w":
                 case "--weeks": {
                     d.countType = ChronoUnit.WEEKS;
@@ -634,14 +635,14 @@ public class NTasksSubCmd {
         }
         String projectName = p != null ? p.getName() : project != null ? project : "*";
         return new Object[]{
-            index,
-            NTextBuilder.of().append(x.getId(), NTextStyle.pale()),
-            parent.getFlagString(x.getFlag()),
-            parent.getStatusString(x.getStatus()),
-            parent.getPriorityString(x.getPriority()),
-            dte.immutable(),
-            parent.getFormattedProject(projectName),
-            x.getName()
+                index,
+                NTextBuilder.of().append(x.getId(), NTextStyle.pale()),
+                parent.getFlagString(x.getFlag()),
+                parent.getStatusString(x.getStatus()),
+                parent.getPriorityString(x.getPriority()),
+                dte.immutable(),
+                parent.getFormattedProject(projectName),
+                x.getName()
         };
     }
 
@@ -742,7 +743,7 @@ public class NTasksSubCmd {
         if (pid.startsWith("#")) {
             int x = NLiteral.of(pid.substring(1)).asInt().orElse(-1);
             if (x >= 1) {
-                Object lastResults = NApp.of().getProperty("LastResults",NScopeType.SESSION).orNull();
+                Object lastResults = NApp.of().getProperty("LastResults", NScopeType.SESSION).orNull();
                 if (lastResults instanceof NTask[] && x <= ((NTask[]) lastResults).length) {
                     t = ((NTask[]) lastResults)[x - 1];
                 }
