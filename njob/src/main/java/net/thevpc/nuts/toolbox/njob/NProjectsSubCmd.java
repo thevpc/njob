@@ -49,44 +49,44 @@ public class NProjectsSubCmd {
             switch (aa.key()) {
                 case "--list":
                 case "-l": {
-                    cmd.withNextFlag((v) -> list.set(v.booleanValue()));
+                    cmd.matcher().matchFlag((v) -> list.set(v.booleanValue())).anyMatch();
                     break;
                 }
                 case "--show":
                 case "-s": {
-                    cmd.withNextFlag((v) -> show.set(v.booleanValue()));
+                    cmd.matcher().matchFlag((v) -> show.set(v.booleanValue())).anyMatch();
                     break;
                 }
                 case "-t":
                 case "--start":
                 case "--on": {
-                    cmd.withNextEntry((v) -> t.setStartTime(new TimeParser().parseInstant(v.stringValue(), false)));
+                    cmd.matcher().matchEntry((v) -> t.setStartTime(new TimeParser().parseInstant(v.stringValue(), false))).anyMatch();
                     break;
                 }
                 case "--at": {
-                    cmd.withNextEntry((v) -> t.setStartTime(new TimeParser().setTimeOnly(true).parseInstant(v.stringValue(), false)));
+                    cmd.matcher().matchEntry((v) -> t.setStartTime(new TimeParser().setTimeOnly(true).parseInstant(v.stringValue(), false))).anyMatch();
                     break;
                 }
                 case "-b":
                 case "--beneficiary":
                 case "--for": {
-                    cmd.withNextEntry((v) -> t.setBeneficiary(v.stringValue()));
+                    cmd.matcher().matchEntry((v) -> t.setBeneficiary(v.stringValue())).anyMatch();
                     break;
                 }
                 case "-c":
                 case "--company":
                 case "--via": {
-                    cmd.withNextEntry((v) -> t.setCompany(v.stringValue()));
+                    cmd.matcher().matchEntry((v) -> t.setCompany(v.stringValue())).anyMatch();
                     break;
                 }
                 case "-1":
                 case "--day1": {
-                    cmd.withNextEntry((v) -> t.setStartWeekDay(WeekDay.parse(v.stringValue())));
+                    cmd.matcher().matchEntry((v) -> t.setStartWeekDay(WeekDay.parse(v.stringValue()))).anyMatch();
                     break;
                 }
                 case "-o":
                 case "--obs": {
-                    cmd.withNextEntry((v) -> t.setObservations(v.stringValue()));
+                    cmd.matcher().matchEntry((v) -> t.setObservations(v.stringValue())).anyMatch();
                     break;
                 }
                 default: {
@@ -133,59 +133,59 @@ public class NProjectsSubCmd {
             switch (aa.key()) {
                 case "-l":
                 case "--list": {
-                    cmd.withNextFlag((v) -> d.list = v.booleanValue());
+                    cmd.matcher().matchFlag((v) -> d.list = v.booleanValue()).anyMatch();
                     break;
                 }
                 case "-s":
                 case "--show": {
-                    cmd.withNextFlag((v) -> d.show = v.booleanValue());
+                    cmd.matcher().matchFlag((v) -> d.show = v.booleanValue()).anyMatch();
                     break;
                 }
                 case "--on":
                 case "--start": {
-                    cmd.withNextEntry((v) -> d.runLater.add(t -> t.setStartTime(new TimeParser().parseInstant(v.stringValue(), false))));
+                    cmd.matcher().matchEntry((v) -> d.runLater.add(t -> t.setStartTime(new TimeParser().parseInstant(v.stringValue(), false)))).anyMatch();
                     break;
                 }
                 case "--at": {
-                    cmd.withNextEntry((v) -> d.runLater.add(t -> t.setStartTime(new TimeParser().setTimeOnly(true).parseInstant(v.stringValue(), false))));
+                    cmd.matcher().matchEntry((v) -> d.runLater.add(t -> t.setStartTime(new TimeParser().setTimeOnly(true).parseInstant(v.stringValue(), false)))).anyMatch();
                     break;
                 }
                 case "--for":
                 case "--beneficiary":
                 case "-b": {
-                    cmd.withNextEntry((v) -> d.runLater.add(t -> t.setBeneficiary(v.stringValue())));
+                    cmd.matcher().matchEntry((v) -> d.runLater.add(t -> t.setBeneficiary(v.stringValue()))).anyMatch();
                     break;
                 }
                 case "--company":
                 case "--via":
                 case "-c": {
-                    cmd.withNextEntry((v) -> d.runLater.add(t -> t.setCompany(v.stringValue())));
+                    cmd.matcher().matchEntry((v) -> d.runLater.add(t -> t.setCompany(v.stringValue()))).anyMatch();
                     break;
                 }
                 case "--day1":
                 case "-1": {
-                    cmd.withNextEntry((v) -> d.runLater.add(t -> t.setStartWeekDay(WeekDay.parse(v.stringValue()))));
+                    cmd.matcher().matchEntry((v) -> d.runLater.add(t -> t.setStartWeekDay(WeekDay.parse(v.stringValue())))).anyMatch();
                     break;
                 }
                 case "--obs":
                 case "-o": {
-                    cmd.withNextEntry((v) -> d.runLater.add(t -> t.setObservations(v.stringValue())));
+                    cmd.matcher().matchEntry((v) -> d.runLater.add(t -> t.setObservations(v.stringValue()))).anyMatch();
                     break;
                 }
                 case "--merge-to": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.matcher().matchEntry((v) -> {
                         if (d.mergeTo != null) {
                             cmd.pushBack(v);
                             cmd.throwUnexpectedArgument();
                         } else {
                             d.mergeTo = v.stringValue();
                         }
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "++obs":
                 case "+o": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.matcher().matchEntry((v) -> {
                         d.runLater.add(t -> {
                             String ss = t.getObservations();
                             if (ss == null) {
@@ -199,7 +199,7 @@ public class NProjectsSubCmd {
                             ss = ss.trim();
                             t.setObservations(ss);
                         });
-                    });
+                    }).anyMatch();
                     break;
                 }
                 default: {
@@ -257,45 +257,45 @@ public class NProjectsSubCmd {
             switch (aa.key()) {
                 case "-b":
                 case "-beneficiary": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.matcher().matchEntry((v) -> {
                         Predicate<String> sp = parent.createStringFilter(v.stringValue());
                         Predicate<NProject> t = x -> sp.test(x.getBeneficiary());
                         parent.appendPredicateRef(whereFilter, t);
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-c":
                 case "-company": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.matcher().matchEntry((v) -> {
                         Predicate<String> sp = parent.createStringFilter(v.stringValue());
                         Predicate<NProject> t = x -> sp.test(x.getCompany());
                         parent.appendPredicateRef(whereFilter, t);
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-n":
                 case "--name": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.matcher().matchEntry((v) -> {
                         Predicate<String> sp = parent.createStringFilter(v.stringValue());
                         Predicate<NProject> t = x -> sp.test(x.getName());
                         parent.appendPredicateRef(whereFilter, t);
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "--unused": {
-                    cmd.withNextFlag((v) -> {
+                    cmd.matcher().matchFlag((v) -> {
                         Predicate<NProject> t = x -> service.projects().isUsedProject(x.getId()) != v.booleanValue();
                         parent.appendPredicateRef(whereFilter, t);
-                    });
+                    }).anyMatch();
                     break;
                 }
                 case "-t":
                 case "--startTime":
                 case "--start-time": {
-                    cmd.withNextEntry((v) -> {
+                    cmd.matcher().matchEntry((v) -> {
                         Predicate<Instant> t = new TimeParser().parseInstantFilter(v.stringValue(), false);
                         parent.appendPredicateRef(whereFilter, x -> t.test(x.getStartTime()));
-                    });
+                    }).anyMatch();
                     break;
                 }
                 default: {
