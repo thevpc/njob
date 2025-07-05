@@ -12,7 +12,7 @@ public class NJobMain {
         NApp.builder(args).run();
     }
 
-    @NApp.Main
+    @NApp.Runner
     public void run() {
         NSession session = NSession.of();
         JobServiceCmd ts = new JobServiceCmd(session);
