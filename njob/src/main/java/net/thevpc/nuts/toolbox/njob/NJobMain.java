@@ -4,7 +4,7 @@ import net.thevpc.nuts.*;
 import net.thevpc.nuts.cmdline.NArg;
 import net.thevpc.nuts.cmdline.NCmdLine;
 
-@NApp.Definition
+@NAppDefinition
 public class NJobMain {
 
 
@@ -12,7 +12,7 @@ public class NJobMain {
         NApp.builder(args).run();
     }
 
-    @NApp.Runner
+    @NAppRunner
     public void run() {
         NSession session = NSession.of();
         JobServiceCmd ts = new JobServiceCmd(session);
