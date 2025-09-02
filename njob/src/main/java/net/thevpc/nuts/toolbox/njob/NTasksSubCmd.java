@@ -7,10 +7,7 @@ import net.thevpc.nuts.format.NMutableTableModel;
 import net.thevpc.nuts.format.NTableFormat;
 import net.thevpc.nuts.io.NPrintStream;
 import net.thevpc.nuts.spi.NScopeType;
-import net.thevpc.nuts.text.NText;
-import net.thevpc.nuts.text.NTextBuilder;
-import net.thevpc.nuts.text.NTextStyle;
-import net.thevpc.nuts.text.NTexts;
+import net.thevpc.nuts.text.*;
 import net.thevpc.nuts.toolbox.njob.model.*;
 import net.thevpc.nuts.toolbox.njob.time.TimeParser;
 import net.thevpc.nuts.toolbox.njob.time.TimePeriod;
@@ -611,16 +608,17 @@ public class NTasksSubCmd {
                     lastResults.add(x);
                 });
                 NApp.of().setProperty("LastResults", NScopeType.SESSION, lastResults.toArray(new NTask[0]));
-                NTableFormat.of()
-                        .setBorder("spaces")
-                        .setValue(m).println();
+                NOut.println(
+                        NTextArt.of().getTableRenderer("table:spaces")
+                                .get().render(m)
+                );
             } else {
                 NOut.print(r.collect(Collectors.toList()));
             }
         }
     }
 
-    private Object[] toTaskRowArray(NTask x, String index) {
+    private NText[] toTaskRowArray(NTask x, String index) {
         String project = x.getProject();
         NProject p = project == null ? null : service.projects().getProject(project);
         NTaskStatus s = x.getStatus();
@@ -634,15 +632,15 @@ public class NTasksSubCmd {
             dte.append(dte0, NTextStyle.keyword(2));
         }
         String projectName = p != null ? p.getName() : project != null ? project : "*";
-        return new Object[]{
-                index,
+        return new NText[]{
+                NText.of(index),
                 NTextBuilder.of().append(x.getId(), NTextStyle.pale()),
-                parent.getFlagString(x.getFlag()),
-                parent.getStatusString(x.getStatus()),
-                parent.getPriorityString(x.getPriority()),
-                dte.immutable(),
+                NText.of(parent.getFlagString(x.getFlag())),
+                NText.of(parent.getStatusString(x.getStatus())),
+                NText.of(parent.getPriorityString(x.getPriority())),
+                dte.build(),
                 parent.getFormattedProject(projectName),
-                x.getName()
+                NText.of(x.getName())
         };
     }
 

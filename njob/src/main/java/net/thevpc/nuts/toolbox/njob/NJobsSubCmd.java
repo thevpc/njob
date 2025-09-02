@@ -8,6 +8,7 @@ import net.thevpc.nuts.format.NTableFormat;
 import net.thevpc.nuts.io.NPrintStream;
 import net.thevpc.nuts.spi.NScopeType;
 import net.thevpc.nuts.text.NText;
+import net.thevpc.nuts.text.NTextArt;
 import net.thevpc.nuts.text.NTextStyle;
 import net.thevpc.nuts.text.NTexts;
 import net.thevpc.nuts.toolbox.njob.model.*;
@@ -478,28 +479,28 @@ public class NJobsSubCmd {
                     lastResults.add(x);
                     m.newRow().addCells(
                             (finalGroupBy != null)
-                                    ? new Object[]{
-                                    parent.createHashId(index[0], -1),
-                                    parent.getFormattedDate(x.getStartTime()),
-                                    durationString,
+                                    ? new NText[]{
+                                    NText.of(parent.createHashId(index[0], -1)),
+                                    NText.of(parent.getFormattedDate(x.getStartTime())),
+                                    NText.of(durationString),
                                     parent.getFormattedProject(x.getProject() == null ? "*" : x.getProject()),
-                                    x.getName()
+                                    NText.of(x.getName())
 
-                            } : new Object[]{
-                                    parent.createHashId(index[0], -1),
+                            } : new NText[]{
+                                    NText.of(parent.createHashId(index[0], -1)),
                                     NText.ofStyled(x.getId(), NTextStyle.pale()),
-                                    parent.getFormattedDate(x.getStartTime()),
-                                    durationString,
+                                    NText.of(parent.getFormattedDate(x.getStartTime())),
+                                    NText.of(durationString),
                                     parent.getFormattedProject(x.getProject() == null ? "*" : x.getProject()),
-                                    x.getName()
-
+                                    NText.of(x.getName())
                             }
                     );
                 });
                 NApp.of().setProperty("LastResults", NScopeType.SESSION, lastResults.toArray(new NJob[0]));
-                NTableFormat.of()
-                        .setBorder("spaces")
-                        .setValue(m).println();
+                NOut.println(
+                        NTextArt.of().getTableRenderer("table:spaces")
+                                .get().render(m)
+                );
             } else {
                 session.out().print(r.collect(Collectors.toList()));
             }

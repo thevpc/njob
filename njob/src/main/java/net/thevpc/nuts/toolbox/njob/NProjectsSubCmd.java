@@ -8,6 +8,7 @@ import net.thevpc.nuts.format.NTableFormat;
 import net.thevpc.nuts.io.NPrintStream;
 import net.thevpc.nuts.spi.NScopeType;
 import net.thevpc.nuts.text.NText;
+import net.thevpc.nuts.text.NTextArt;
 import net.thevpc.nuts.text.NTextStyle;
 import net.thevpc.nuts.text.NTexts;
 import net.thevpc.nuts.toolbox.njob.model.NProject;
@@ -333,18 +334,19 @@ public class NProjectsSubCmd {
                     lastResults.add(x);
                     index[0]++;
                     m.newRow().addCells(
-                            parent.createHashId(index[0], -1),
-                            x.getId(),
-                            sts,
-                            x.getCompany(),
-                            x.getBeneficiary(),
+                            NText.of(parent.createHashId(index[0], -1)),
+                                    NText.of(x.getId()),
+                                            NText.of(sts),
+                                                    NText.of(x.getCompany()),
+                                                            NText.of(x.getBeneficiary()),
                             parent.getFormattedProject(x.getName() == null ? "*" : x.getName())
                     );
                 });
                 NApp.of().setProperty("LastResults", NScopeType.SESSION, lastResults.toArray(new NProject[0]));
-                NTableFormat.of()
-                        .setBorder("spaces")
-                        .setValue(m).println(session.out());
+                NOut.println(
+                        NTextArt.of().getTableRenderer("table:spaces")
+                                .get().render(m)
+                );
             } else {
                 NOut.print(r.collect(Collectors.toList()));
             }

@@ -144,7 +144,7 @@ public class JobServiceCmd {
 
     protected NText getCheckedString(Boolean x) {
         if (x == null) {
-            return NText.ofPlain("");
+            return NText.ofBlank();
         }
         if (x) {
             return NText.ofPlain("\u2611");
