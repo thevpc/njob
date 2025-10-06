@@ -1,10 +1,11 @@
 package net.thevpc.nuts.toolbox.njob;
 
-import net.thevpc.nuts.*;
+import net.thevpc.nuts.app.NApp;
 import net.thevpc.nuts.cmdline.NArg;
 import net.thevpc.nuts.cmdline.NCmdLine;
-import net.thevpc.nuts.format.NMutableTableModel;
-import net.thevpc.nuts.format.NTableFormat;
+import net.thevpc.nuts.core.NSession;
+import net.thevpc.nuts.io.NOut;
+import net.thevpc.nuts.text.NMutableTableModel;
 import net.thevpc.nuts.io.NPrintStream;
 import net.thevpc.nuts.spi.NScopeType;
 import net.thevpc.nuts.text.*;
