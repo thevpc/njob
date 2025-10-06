@@ -1,6 +1,6 @@
 package net.thevpc.nuts.toolbox.njob;
 
-import net.thevpc.nuts.*;
+import net.thevpc.nuts.core.NSession;
 
 public class NCompaniesSubCmd {
     private JobService service;
