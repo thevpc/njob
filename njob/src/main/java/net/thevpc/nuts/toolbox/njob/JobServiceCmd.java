@@ -1,15 +1,20 @@
 package net.thevpc.nuts.toolbox.njob;
 
-import net.thevpc.nuts.*;
+import net.thevpc.nuts.app.NApp;
+import net.thevpc.nuts.artifact.NId;
 import net.thevpc.nuts.cmdline.NCmdLine;
 import net.thevpc.nuts.cmdline.NCmdLineHistory;
 
+import net.thevpc.nuts.core.NSession;
+import net.thevpc.nuts.core.NWorkspace;
 import net.thevpc.nuts.io.NIO;
+import net.thevpc.nuts.io.NOut;
 import net.thevpc.nuts.io.NPath;
 import net.thevpc.nuts.io.NSystemTerminal;
 import net.thevpc.nuts.text.*;
 import net.thevpc.nuts.toolbox.njob.model.*;
 import net.thevpc.nuts.toolbox.njob.time.TimeFormatter;
+import net.thevpc.nuts.util.NIllegalArgumentException;
 import net.thevpc.nuts.util.NMsg;
 import net.thevpc.nuts.util.NRef;
 
