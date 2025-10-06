@@ -27,11 +27,11 @@ package net.thevpc.nuts.toolbox.njob;
 import java.util.Arrays;
 import java.util.List;
 
-import net.thevpc.nuts.*;
 import net.thevpc.nuts.cmdline.DefaultNCmdLineAutoComplete;
 import net.thevpc.nuts.cmdline.NArgCandidate;
 import net.thevpc.nuts.cmdline.NCmdLine;
 import net.thevpc.nuts.cmdline.NCmdLineAutoCompleteResolver;
+import net.thevpc.nuts.core.NWorkspace;
 
 
 /**
