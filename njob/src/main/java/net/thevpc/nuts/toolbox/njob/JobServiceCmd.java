@@ -15,7 +15,7 @@ import net.thevpc.nuts.text.*;
 import net.thevpc.nuts.toolbox.njob.model.*;
 import net.thevpc.nuts.toolbox.njob.time.TimeFormatter;
 import net.thevpc.nuts.util.NIllegalArgumentException;
-import net.thevpc.nuts.util.NMsg;
+import net.thevpc.nuts.text.NMsg;
 import net.thevpc.nuts.util.NRef;
 
 import java.io.InputStream;
