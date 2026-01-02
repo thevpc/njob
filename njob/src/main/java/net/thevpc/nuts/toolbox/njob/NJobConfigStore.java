@@ -3,7 +3,7 @@ package net.thevpc.nuts.toolbox.njob;
 import net.thevpc.nuts.app.NApp;
 import net.thevpc.nuts.core.NSession;
 import net.thevpc.nuts.elem.NElementDescribables;
-import net.thevpc.nuts.elem.NElementParser;
+import net.thevpc.nuts.elem.NElementReader;
 import net.thevpc.nuts.elem.NElementWriter;
 import net.thevpc.nuts.platform.NStoreType;
 import net.thevpc.nuts.io.NPath;
@@ -60,7 +60,7 @@ public class NJobConfigStore {
 
     public <T> Stream<T> search(Class<T> type) {
         NPath f = getFile(getEntityName(type), "any").getParent();
-        NFunction<NPath, T> parse = NFunction.of((NPath x) -> NElementParser.ofJson().parse(x, type)).redescribe(NElementDescribables.ofDesc("parse"));
+        NFunction<NPath, T> parse = NFunction.of((NPath x) -> NElementReader.ofJson().read(x, type)).redescribe(NElementDescribables.ofDesc("parse"));
         return f.stream().filter(
                         NPredicate.of((NPath x) -> x.isRegularFile() && x.getName().endsWith(".json"))
                                 .redescribe(NElementDescribables.ofDesc("isRegularFile() && matches(*.json" + ")"))
@@ -72,7 +72,7 @@ public class NJobConfigStore {
     public <T> T load(Class<T> type, Object id) {
         NPath f = getFile(getEntityName(type), id);
         if (f.exists()) {
-            return NElementParser.ofJson().parse(f, type);
+            return NElementReader.ofJson().read(f, type);
         }
         return null;
     }
