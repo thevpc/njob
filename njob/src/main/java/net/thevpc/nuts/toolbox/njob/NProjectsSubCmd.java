@@ -343,7 +343,7 @@ public class NProjectsSubCmd {
                             parent.getFormattedProject(x.getName() == null ? "*" : x.getName())
                     );
                 });
-                NApp.of().setProperty("LastResults", NScopeType.SESSION, lastResults.toArray(new NProject[0]));
+                NSession.of().setProperty("LastResults", lastResults.toArray(new NProject[0]));
                 NOut.println(
                         NTextArt.of().getTableRenderer("table:spaces")
                                 .get().render(m)
@@ -408,7 +408,7 @@ public class NProjectsSubCmd {
         if (pid.startsWith("#")) {
             int x = JobServiceCmd.parseIntOrFF(pid.substring(1));
             if (x >= 1) {
-                Object lastResults = NApp.of().getProperty("LastResults",NScopeType.SESSION).orNull();
+                Object lastResults = NSession.of().getProperty("LastResults").orNull();
                 if (lastResults instanceof NProject[] && x <= ((NProject[]) lastResults).length) {
                     t = ((NProject[]) lastResults)[x - 1];
                 }
