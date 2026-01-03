@@ -608,7 +608,7 @@ public class NTasksSubCmd {
                     ));
                     lastResults.add(x);
                 });
-                NApp.of().setProperty("LastResults", NScopeType.SESSION, lastResults.toArray(new NTask[0]));
+                NSession.of().setProperty("LastResults", lastResults.toArray(new NTask[0]));
                 NOut.println(
                         NTextArt.of().getTableRenderer("table:spaces")
                                 .get().render(m)
@@ -742,7 +742,7 @@ public class NTasksSubCmd {
         if (pid.startsWith("#")) {
             int x = NLiteral.of(pid.substring(1)).asInt().orElse(-1);
             if (x >= 1) {
-                Object lastResults = NApp.of().getProperty("LastResults", NScopeType.SESSION).orNull();
+                Object lastResults = NSession.of().getProperty("LastResults").orNull();
                 if (lastResults instanceof NTask[] && x <= ((NTask[]) lastResults).length) {
                     t = ((NTask[]) lastResults)[x - 1];
                 }
