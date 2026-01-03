@@ -4,6 +4,7 @@ import net.thevpc.nuts.app.NApp;
 import net.thevpc.nuts.cmdline.NArg;
 import net.thevpc.nuts.cmdline.NCmdLine;
 import net.thevpc.nuts.core.NSession;
+import net.thevpc.nuts.core.NWorkspace;
 import net.thevpc.nuts.io.NOut;
 import net.thevpc.nuts.text.NMutableTableModel;
 import net.thevpc.nuts.io.NPrintStream;
@@ -497,7 +498,7 @@ public class NJobsSubCmd {
                             }
                     );
                 });
-                NApp.of().setProperty("LastResults", NScopeType.SESSION, lastResults.toArray(new NJob[0]));
+                NSession.of().setProperty("LastResults", lastResults.toArray(new NJob[0]));
                 NOut.println(
                         NTextArt.of().getTableRenderer("table:spaces")
                                 .get().render(m)
@@ -513,7 +514,7 @@ public class NJobsSubCmd {
         if (pid.startsWith("#")) {
             int x = JobServiceCmd.parseIntOrFF(pid.substring(1));
             if (x >= 1) {
-                Object lastResults = NApp.of().getProperty("LastResults",NScopeType.SESSION).orNull();
+                Object lastResults = NSession.of().getProperty("LastResults").orNull();
                 if (lastResults instanceof NJob[] && x <= ((NJob[]) lastResults).length) {
                     t = ((NJob[]) lastResults)[x - 1];
                 }
