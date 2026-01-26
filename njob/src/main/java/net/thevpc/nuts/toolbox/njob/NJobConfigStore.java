@@ -100,7 +100,7 @@ public class NJobConfigStore {
         NPath objectFile = getObjectFile(o);
         objectFile.mkParentDirs();
 
-        NElementWriter.ofJson().setCompact(false).write(o, objectFile);
+        NElementWriter.ofJson().setFormatterPretty().write(o, objectFile);
     }
 
     public String generateId(Class clz) {
