@@ -19,7 +19,7 @@ public class NJobMain {
     public void run() {
         NSession session = NSession.of();
         JobServiceCmd ts = new JobServiceCmd(session);
-        NCmdLine cmdLine = NApp.of().getCmdLine();
+        NCmdLine cmdLine = NApp.of().cmdLine();
         NArg a;
         while(!cmdLine.isEmpty()) {
             if (session.configureFirst(cmdLine)) {

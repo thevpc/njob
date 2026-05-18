@@ -312,7 +312,7 @@ public class JobServiceCmd {
                 .setCommandAutoCompleteResolver(new JobAutoCompleter(session.getWorkspace()))
                 .setCommandHistory(
                         NCmdLineHistory.of()
-                                .setPath(NApp.of().getVarFolder().resolve("njob-history.hist"))
+                                .setPath(NApp.of().varFolder().resolve("njob-history.hist"))
                 );
         NWorkspace.of().setProperty(JobServiceCmd.class.getName(), this);
 
@@ -323,10 +323,10 @@ public class JobServiceCmd {
 //        ));
         NTexts text = NTexts.of();
 
-        NId appId = NApp.of().getId().get();
+        NId appId = NApp.of().id().get();
         NOut.print(NMsg.ofC(
                 "%s interactive mode. type %s to quit.%n",
-                text.ofStyled(appId.getArtifactId() + " " + appId.getVersion(), NTextStyle.primary1()),
+                text.ofStyled(appId.artifactId() + " " + appId.version(), NTextStyle.primary1()),
                 text.ofStyled("q", NTextStyle.error())
         ));
         InputStream in = session.getTerminal().in();
@@ -351,7 +351,7 @@ public class JobServiceCmd {
                 }
             } else {
                 NCmdLine cmd = NCmdLine.parseDefault(line).get();
-                cmd.setCommandName(appId.getArtifactId());
+                cmd.setCommandName(appId.artifactId());
                 try {
                     lastError = null;
                     boolean b = runCommands(cmd);
