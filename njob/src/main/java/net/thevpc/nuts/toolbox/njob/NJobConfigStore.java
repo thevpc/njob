@@ -59,10 +59,10 @@ public class NJobConfigStore {
     }
 
     public <T> Stream<T> search(Class<T> type) {
-        NPath f = getFile(getEntityName(type), "any").getParent();
+        NPath f = getFile(getEntityName(type), "any").parent();
         NFunction<NPath, T> parse = NFunction.of((NPath x) -> NElementReader.ofJson().read(x, type)).withDescription(NDescribables.ofDesc("parse"));
         return f.stream().filter(
-                        NPredicate.of((NPath x) -> x.isRegularFile() && x.getName().endsWith(".json"))
+                        NPredicate.of((NPath x) -> x.isRegularFile() && x.name().endsWith(".json"))
                                 .withDescription(NDescribables.ofDesc("isRegularFile() && matches(*.json" + ")"))
                 )
                 .map(parse)

@@ -120,7 +120,7 @@ public class JobServiceCmd {
         NPath p = NPath.of("classpath:/net/thevpc/nuts/toolbox/" + name + ".ntf");
         NOut.println(
                 text.transform(text.parser().parse(p), new NTextTransformConfig()
-                        .setCurrentDir(p.getParent())
+                        .setCurrentDir(p.parent())
                         .setImportClassLoader(getClass().getClassLoader())
                         .setRootLevel(1)
                         .setProcessAll(true)
