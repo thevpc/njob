@@ -309,7 +309,7 @@ public class JobServiceCmd {
     public void runInteractive(NCmdLine cmdLine) {
         NSystemTerminal.enableRichTerm();
         NIO.of().getSystemTerminal()
-                .setCommandAutoCompleteResolver(new JobAutoCompleter(session.getWorkspace()))
+                .setCommandAutoCompleteResolver(new JobAutoCompleter(session.workspace()))
                 .setCommandHistory(
                         NCmdLineHistory.of()
                                 .setPath(NApp.of().varFolder().resolve("njob-history.hist"))
@@ -329,12 +329,12 @@ public class JobServiceCmd {
                 text.ofStyled(appId.artifactId() + " " + appId.version(), NTextStyle.primary1()),
                 text.ofStyled("q", NTextStyle.error())
         ));
-        InputStream in = session.getTerminal().in();
+        InputStream in = session.terminal().in();
         Exception lastError = null;
         while (true) {
             String line = null;
             try {
-                line = session.getTerminal().readLine(NMsg.ofPlain("> "));
+                line = session.terminal().readLine(NMsg.ofPlain("> "));
             } catch (NoSuchElementException e) {
             }
             if (line == null) {

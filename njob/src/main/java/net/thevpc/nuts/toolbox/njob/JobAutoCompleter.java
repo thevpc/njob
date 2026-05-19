@@ -46,7 +46,7 @@ public class JobAutoCompleter implements NCmdLineAutoCompleteResolver {
 
     @Override
     public List<NArgCandidate> resolveCandidates(NCmdLine cmdLine, Pos pos) {
-        JobServiceCmd fileContext = (JobServiceCmd) NWorkspace.of().getProperties().get(JobServiceCmd.class.getName());
+        JobServiceCmd fileContext = (JobServiceCmd) NWorkspace.of().properties().get(JobServiceCmd.class.getName());
         DefaultNCmdLineAutoComplete autoComplete = new DefaultNCmdLineAutoComplete()
                 .setCurrentWordIndex(pos.wordIndex())
                 .setLine(cmdLine.toString()).setWords(
