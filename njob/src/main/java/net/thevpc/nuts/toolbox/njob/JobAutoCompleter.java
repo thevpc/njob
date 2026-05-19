@@ -52,9 +52,9 @@ public class JobAutoCompleter implements NCmdLineAutoCompleteResolver {
                 .setLine(cmdLine.toString()).setWords(
                 Arrays.asList(cmdLine.toStringArray())
         );
-        cmdLine.setAutoComplete(autoComplete);
+        cmdLine.autoComplete(autoComplete);
         fileContext.runCommands(cmdLine);
-        return autoComplete.getCandidates();
+        return autoComplete.candidates();
     }
 
 }

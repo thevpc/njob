@@ -351,7 +351,7 @@ public class JobServiceCmd {
                 }
             } else {
                 NCmdLine cmd = NCmdLine.parseDefault(line).get();
-                cmd.setCommandName(appId.artifactId());
+                cmd.commandName(appId.artifactId());
                 try {
                     lastError = null;
                     boolean b = runCommands(cmd);
