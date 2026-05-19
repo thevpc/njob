@@ -308,7 +308,7 @@ public class JobServiceCmd {
 
     public void runInteractive(NCmdLine cmdLine) {
         NSystemTerminal.enableRichTerm();
-        NIO.of().getSystemTerminal()
+        NIO.of().systemTerminal()
                 .setCommandAutoCompleteResolver(new JobAutoCompleter(session.workspace()))
                 .setCommandHistory(
                         NCmdLineHistory.of()
