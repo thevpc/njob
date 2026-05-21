@@ -120,20 +120,20 @@ public class JobServiceCmd {
         NPath p = NPath.of("classpath:/net/thevpc/nuts/toolbox/" + name + ".ntf");
         NOut.println(
                 text.transform(text.parser().parse(p), new NTextTransformConfig()
-                        .setCurrentDir(p.parent())
-                        .setImportClassLoader(getClass().getClassLoader())
-                        .setRootLevel(1)
-                        .setProcessAll(true)
-                        .setNormalize(true)
+                        .currentDir(p.parent())
+                        .importClassLoader(getClass().getClassLoader())
+                        .rootLevel(1)
+                        .processAll(true)
+                        .normalize(true)
                 )
         );
     }
 
     protected NText getFormattedProject(String projectName) {
         NTextBuilder builder = NTextBuilder.of();
-        builder.getStyleGenerator()
-                .setIncludeForeground(true)
-                .setUsePaletteColors();
+        builder.styleGenerator()
+                .includeForeground(true)
+                .usePaletteColors();
         return builder.appendHashStyle(projectName).immutable();
     }
 
@@ -309,10 +309,10 @@ public class JobServiceCmd {
     public void runInteractive(NCmdLine cmdLine) {
         NSystemTerminal.enableRichTerm();
         NIO.of().systemTerminal()
-                .setCommandAutoCompleteResolver(new JobAutoCompleter(session.workspace()))
-                .setCommandHistory(
+                .commandAutoCompleteResolver(new JobAutoCompleter(session.workspace()))
+                .commandHistory(
                         NCmdLineHistory.of()
-                                .setPath(NApp.of().varFolder().resolve("njob-history.hist"))
+                                .path(NApp.of().varFolder().resolve("njob-history.hist"))
                 );
         NWorkspace.of().setProperty(JobServiceCmd.class.getName(), this);
 

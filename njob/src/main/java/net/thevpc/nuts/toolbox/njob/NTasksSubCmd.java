@@ -1,13 +1,11 @@
 package net.thevpc.nuts.toolbox.njob;
 
-import net.thevpc.nuts.app.NApp;
 import net.thevpc.nuts.cmdline.NArg;
 import net.thevpc.nuts.cmdline.NCmdLine;
 import net.thevpc.nuts.core.NSession;
 import net.thevpc.nuts.io.NOut;
 import net.thevpc.nuts.text.NMutableTableModel;
 import net.thevpc.nuts.io.NPrintStream;
-import net.thevpc.nuts.spi.NScopeType;
 import net.thevpc.nuts.text.*;
 import net.thevpc.nuts.toolbox.njob.model.*;
 import net.thevpc.nuts.toolbox.njob.time.TimeParser;
@@ -442,18 +440,18 @@ public class NTasksSubCmd {
                 case "-w":
                 case "--weeks": {
                     d.countType = ChronoUnit.WEEKS;
-                    d.count = cmd.nextEntry().get().getValue().asInt().get();
+                    d.count = cmd.nextEntry().get().toLiteral().asInt().get();
                     break;
                 }
                 case "-m":
                 case "--months": {
                     d.countType = ChronoUnit.MONTHS;
-                    d.count = cmd.nextEntry().get().getValue().asInt().get();
+                    d.count = cmd.nextEntry().get().toLiteral().asInt().get();
                     break;
                 }
                 case "-l": {
                     d.countType = null;
-                    d.count = cmd.nextEntry().get().getValue().asInt().get();
+                    d.count = cmd.nextEntry().get().toLiteral().asInt().get();
                     break;
                 }
                 case "-u":
