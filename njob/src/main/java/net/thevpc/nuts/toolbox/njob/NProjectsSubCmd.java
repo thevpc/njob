@@ -1,17 +1,14 @@
 package net.thevpc.nuts.toolbox.njob;
 
-import net.thevpc.nuts.app.NApp;
 import net.thevpc.nuts.cmdline.NArg;
 import net.thevpc.nuts.cmdline.NCmdLine;
 import net.thevpc.nuts.core.NSession;
 import net.thevpc.nuts.io.NOut;
 import net.thevpc.nuts.text.NMutableTableModel;
 import net.thevpc.nuts.io.NPrintStream;
-import net.thevpc.nuts.spi.NScopeType;
 import net.thevpc.nuts.text.NText;
 import net.thevpc.nuts.text.NTextArt;
 import net.thevpc.nuts.text.NTextStyle;
-import net.thevpc.nuts.text.NTexts;
 import net.thevpc.nuts.toolbox.njob.model.NProject;
 import net.thevpc.nuts.toolbox.njob.time.TimeParser;
 import net.thevpc.nuts.toolbox.njob.time.WeekDay;
@@ -219,7 +216,6 @@ public class NProjectsSubCmd {
             cmd.throwError(NMsg.ofNtf("project name expected"));
         }
         if (cmd.isExecMode()) {
-            NTexts text = NTexts.of();
             for (NProject project : d.projects) {
                 for (Consumer<NProject> c : d.runLater) {
                     c.accept(project);
@@ -227,8 +223,8 @@ public class NProjectsSubCmd {
                 service.projects().updateProject(project);
                 if (session.isPlainTrace()) {
                     NOut.println(NMsg.ofC("project %s (%s) updated.",
-                            text.ofStyled(project.getId(), NTextStyle.primary5()),
-                            text.ofStyled(project.getName(), NTextStyle.primary1())
+                            NText.ofStyled(project.getId(), NTextStyle.primary5()),
+                            NText.ofStyled(project.getName(), NTextStyle.primary1())
                     ));
                 }
             }
@@ -236,8 +232,7 @@ public class NProjectsSubCmd {
                 service.projects().mergeProjects(d.mergeTo, d.projects.stream().map(x -> x.getId()).toArray(String[]::new));
                 if (session.isPlainTrace()) {
                     NOut.println(NMsg.ofC("projects merged to %s.",
-                            NTexts.of()
-                                    .ofStyled(d.mergeTo, NTextStyle.primary5())
+                            NText.ofStyled(d.mergeTo, NTextStyle.primary5())
                     ));
                 }
             }
@@ -355,7 +350,6 @@ public class NProjectsSubCmd {
     }
 
     private void runProjectRemove(NCmdLine cmd) {
-        NTexts text = NTexts.of();
         while (cmd.hasNext()) {
             NArg a = cmd.next().get();
             if (cmd.isExecMode()) {
@@ -364,13 +358,13 @@ public class NProjectsSubCmd {
                 if (service.projects().removeProject(t.getId())) {
                     if (session.isPlainTrace()) {
                         out.println(NMsg.ofC("project %s removed.",
-                                text.ofStyled(a.toString(), NTextStyle.primary5())
+                                NText.ofStyled(a.toString(), NTextStyle.primary5())
                         ));
                     }
                 } else {
                     out.println(NMsg.ofC("project %s %s.",
-                            text.ofStyled(a.toString(), NTextStyle.primary5()),
-                            text.ofStyled("not found", NTextStyle.error())
+                            NText.ofStyled(a.toString(), NTextStyle.primary5()),
+                            NText.ofStyled("not found", NTextStyle.error())
                     ));
                 }
             }

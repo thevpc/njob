@@ -402,13 +402,12 @@ public class NTasksSubCmd {
                     c.accept(task);
                 }
             }
-            NTexts text = NTexts.of();
             for (NTask task : new LinkedHashSet<>(d.tasks)) {
                 service.tasks().updateTask(task);
                 if (session.isPlainTrace()) {
                     NOut.println(NMsg.ofC("task %s (%s) updated.",
-                            text.ofStyled(task.getId(), NTextStyle.primary5()),
-                            text.ofStyled(task.getName(), NTextStyle.primary1())
+                            NText.ofStyled(task.getId(), NTextStyle.primary5()),
+                            NText.ofStyled(task.getName(), NTextStyle.primary1())
                     ));
                 }
             }
@@ -644,7 +643,6 @@ public class NTasksSubCmd {
     }
 
     private void runTaskRemove(NCmdLine cmd) {
-        NTexts text = NTexts.of();
         while (cmd.hasNext()) {
             NArg a = cmd.next().get();
             if (cmd.isExecMode()) {
@@ -652,13 +650,13 @@ public class NTasksSubCmd {
                 if (service.tasks().removeTask(t.getId())) {
                     if (session.isPlainTrace()) {
                         session.out().println(NMsg.ofC("task %s removed.",
-                                text.ofStyled(a.toString(), NTextStyle.primary5())
+                                NText.ofStyled(a.toString(), NTextStyle.primary5())
                         ));
                     }
                 } else {
                     session.out().println(NMsg.ofC("task %s %s.",
-                            text.ofStyled(a.toString(), NTextStyle.primary5()),
-                            text.ofStyled("not found", NTextStyle.error())
+                            NText.ofStyled(a.toString(), NTextStyle.primary5()),
+                            NText.ofStyled("not found", NTextStyle.error())
                     ));
                 }
             }

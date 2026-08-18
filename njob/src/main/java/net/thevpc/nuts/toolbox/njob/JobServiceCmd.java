@@ -102,24 +102,22 @@ public class JobServiceCmd {
             long tasksCount = service.tasks().findTasks(NTaskStatusFilter.OPEN, null, -1, null, null, null, null, null).count();
             long jobsCount = service.jobs().findMonthJobs(null).count();
             long allJobsCount = service.jobs().findLastJobs(null, -1, null, null, null, null, null).count();
-            NTexts text = NTexts.of();
-            NOut.print(NMsg.ofC("%s open task%s\n", text.ofStyled("" + tasksCount, NTextStyle.primary1()), tasksCount == 1 ? "" : "s"));
-            NOut.print(NMsg.ofC("%s job%s %s\n", text.ofStyled("" + allJobsCount, NTextStyle.primary1()), allJobsCount == 1 ? "" : "s",
+            NOut.print(NMsg.ofC("%s open task%s\n", NText.ofStyled("" + tasksCount, NTextStyle.primary1()), tasksCount == 1 ? "" : "s"));
+            NOut.print(NMsg.ofC("%s job%s %s\n", NText.ofStyled("" + allJobsCount, NTextStyle.primary1()), allJobsCount == 1 ? "" : "s",
                     allJobsCount == 0 ? ""
-                            : text.ofBuilder()
+                            : NTextBuilder.of()
                             .append("(")
                             .append("" + jobsCount, NTextStyle.primary1())
                             .append(" this month)")
             ));
-            NOut.print(NMsg.ofC("%s project%s\n", text.ofStyled("" + projectsCount, NTextStyle.primary1()), projectsCount == 1 ? "" : "s"));
+            NOut.print(NMsg.ofC("%s project%s\n", NText.ofStyled("" + projectsCount, NTextStyle.primary1()), projectsCount == 1 ? "" : "s"));
         }
     }
 
     protected void showCustomHelp(String name) {
-        NTexts text = NTexts.of();
         NPath p = NPath.of("classpath:/net/thevpc/nuts/toolbox/" + name + ".ntf");
         NOut.println(
-                text.transform(text.parser().parse(p), new NTextTransformConfig()
+                NText.transform(NTextParser.of().parse(p), new NTextTransformConfig()
                         .currentDir(p.parent())
                         .importClassLoader(getClass().getClassLoader())
                         .rootLevel(1)
@@ -182,21 +180,20 @@ public class JobServiceCmd {
     }
 
     protected NText getStatusString(NTaskStatus x) {
-        NTexts text = NTexts.of();
         if (x == null) {
-            return text.ofPlain("*");
+            return NText.ofPlain("*");
         }
         switch (x) {
             case TODO:
-                return text.ofPlain("\u24c9");
+                return NText.ofPlain("\u24c9");
             case DONE:
-                return text.ofStyled("\u2611", NTextStyle.success());
+                return NText.ofStyled("\u2611", NTextStyle.success());
             case WIP:
-                return text.ofStyled("\u24CC", NTextStyle.primary1());
+                return NText.ofStyled("\u24CC", NTextStyle.primary1());
             case CANCELLED:
-                return text.ofStyled("\u2718", NTextStyle.fail());
+                return NText.ofStyled("\u2718", NTextStyle.fail());
         }
-        return text.ofPlain("?");
+        return NText.ofPlain("?");
     }
 
     private NText getFlagString(String x, int index) {
@@ -321,13 +318,11 @@ public class JobServiceCmd {
 //                session.io().term().getSystemTerminal(), 
 //                        session
 //        ));
-        NTexts text = NTexts.of();
-
         NId appId = NApp.of().id().get();
         NOut.print(NMsg.ofC(
                 "%s interactive mode. type %s to quit.%n",
-                text.ofStyled(appId.artifactId() + " " + appId.version(), NTextStyle.primary1()),
-                text.ofStyled("q", NTextStyle.error())
+                NText.ofStyled(appId.artifactId() + " " + appId.version(), NTextStyle.primary1()),
+                NText.ofStyled("q", NTextStyle.error())
         ));
         InputStream in = session.terminal().in();
         Exception lastError = null;

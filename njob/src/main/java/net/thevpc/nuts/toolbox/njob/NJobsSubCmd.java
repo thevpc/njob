@@ -9,7 +9,6 @@ import net.thevpc.nuts.io.NPrintStream;
 import net.thevpc.nuts.text.NText;
 import net.thevpc.nuts.text.NTextArt;
 import net.thevpc.nuts.text.NTextStyle;
-import net.thevpc.nuts.text.NTexts;
 import net.thevpc.nuts.toolbox.njob.model.*;
 import net.thevpc.nuts.toolbox.njob.time.*;
 import net.thevpc.nuts.text.NMsg;
@@ -220,13 +219,12 @@ public class NJobsSubCmd {
                     c.accept(job);
                 }
             }
-            NTexts text = NTexts.of();
             for (NJob job : new LinkedHashSet<>(d.jobs)) {
                 service.jobs().updateJob(job);
                 if (session.isPlainTrace()) {
                     session.out().println(NMsg.ofC("job %s (%s) updated.",
-                            text.ofStyled(job.getId(), NTextStyle.primary5()),
-                            text.ofStyled(job.getName(), NTextStyle.primary1())
+                            NText.ofStyled(job.getId(), NTextStyle.primary5()),
+                            NText.ofStyled(job.getName(), NTextStyle.primary1())
                     ));
                 }
             }
@@ -270,7 +268,6 @@ public class NJobsSubCmd {
     }
 
     private void runJobRemove(NCmdLine cmd) {
-        NTexts text = NTexts.of();
         while (cmd.hasNext()) {
             NArg a = cmd.next().get();
             NJob t = findJob(a.toString(), cmd);
@@ -278,13 +275,13 @@ public class NJobsSubCmd {
                 if (service.jobs().removeJob(t.getId())) {
                     if (session.isPlainTrace()) {
                         session.out().println(NMsg.ofC("job %s removed.",
-                                text.ofStyled(a.toString(), NTextStyle.primary5())
+                                NText.ofStyled(a.toString(), NTextStyle.primary5())
                         ));
                     }
                 } else {
                     session.out().println(NMsg.ofC("job %s %s.",
-                            text.ofStyled(a.toString(), NTextStyle.primary5()),
-                            text.ofStyled("not found", NTextStyle.error())
+                            NText.ofStyled(a.toString(), NTextStyle.primary5()),
+                            NText.ofStyled("not found", NTextStyle.error())
                     ));
                 }
             }
