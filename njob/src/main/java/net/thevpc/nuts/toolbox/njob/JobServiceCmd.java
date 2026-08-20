@@ -306,7 +306,7 @@ public class JobServiceCmd {
     public void runInteractive(NCmdLine cmdLine) {
         NSystemTerminal.enableRichTerm();
         NIO.of().systemTerminal()
-                .commandAutoCompleteResolver(new JobAutoCompleter(session.workspace()))
+                .commandAutoCompleteResolver(new JobCompleter(session.workspace()))
                 .commandHistory(
                         NCmdLineHistory.of()
                                 .path(NApp.of().varFolder().resolve("njob-history.hist"))
