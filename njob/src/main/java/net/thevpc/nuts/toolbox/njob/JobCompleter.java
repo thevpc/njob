@@ -44,14 +44,9 @@ public class JobCompleter implements NArgCompleteResolver {
     @Override
     public NArgCompleteResult resolveCandidates(NCmdLine cmdLine, NArgCompletePos pos) {
         JobServiceCmd fileContext = (JobServiceCmd) NWorkspace.of().properties().get(JobServiceCmd.class.getName());
-        DefaultNCmdLineComplete autoComplete = new DefaultNCmdLineComplete()
-                .setCurrentPos(pos.wordIndex())
-                .setLine(cmdLine.toString()).setWords(
-                        Arrays.asList(cmdLine.toStringArray())
-                );
-        cmdLine.complete(autoComplete);
+        cmdLine.complete(pos);
         fileContext.runCommands(cmdLine);
-        return NArgCompleteResult.ofCandidates(autoComplete.candidates(), autoComplete.flags());
+        return cmdLine.completeResult();
     }
 
 }

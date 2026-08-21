@@ -66,7 +66,7 @@ public class NJobConfigStore {
                                 .withDescription(NDescribables.ofDesc("isRegularFile() && matches(*.json" + ")"))
                 )
                 .map(parse)
-                .nonNull().stream();
+                .nonNull().jstream();
     }
 
     public <T> T load(Class<T> type, Object id) {
