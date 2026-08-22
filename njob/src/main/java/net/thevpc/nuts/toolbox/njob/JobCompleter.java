@@ -24,8 +24,6 @@
  */
 package net.thevpc.nuts.toolbox.njob;
 
-import java.util.Arrays;
-
 import net.thevpc.nuts.cmdline.*;
 import net.thevpc.nuts.core.NWorkspace;
 
@@ -42,9 +40,9 @@ public class JobCompleter implements NArgCompleteResolver {
     }
 
     @Override
-    public NArgCompleteResult resolveCandidates(NCmdLine cmdLine, NArgCompletePos pos) {
+    public NArgCompleteResult resolveCandidates(NCmdLine cmdLine, NArgCompletePosition pos) {
         JobServiceCmd fileContext = (JobServiceCmd) NWorkspace.of().properties().get(JobServiceCmd.class.getName());
-        cmdLine.complete(pos);
+        cmdLine.completePosition(pos);
         fileContext.runCommands(cmdLine);
         return cmdLine.completeResult();
     }

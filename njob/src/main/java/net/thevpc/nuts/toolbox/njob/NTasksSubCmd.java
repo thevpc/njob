@@ -191,71 +191,71 @@ public class NTasksSubCmd {
             switch (aa.key()) {
                 case "--list":
                 case "-l": {
-                    cmd.matcher().withAny().matchFlag((v) -> d.list = v.booleanValue()).anyMatch();
+                    cmd.matcher().whenAny().asFlag((v) -> d.list = v.booleanValue()).anyMatch();
                     break;
                 }
                 case "--show":
                 case "-s": {
-                    cmd.matcher().withAny().matchFlag((v) -> d.show = v.booleanValue()).anyMatch();
+                    cmd.matcher().whenAny().asFlag((v) -> d.show = v.booleanValue()).anyMatch();
                     break;
                 }
                 case "--start": {
-                    cmd.matcher().withAny().matchEntry((v) -> d.runLater.add(t -> t.setStartTime(new TimeParser().parseInstant(v.stringValue(), false)))).anyMatch();
+                    cmd.matcher().whenAny().asEntry((v) -> d.runLater.add(t -> t.setStartTime(new TimeParser().parseInstant(v.stringValue(), false)))).anyMatch();
                     break;
                 }
                 case "-t":
                 case "--on":
                 case "--due": {
-                    cmd.matcher().withAny().matchEntry((v) -> d.runLater.add(t -> t.setDueTime(TimePeriod.parseOpPeriodAsInstant(v.stringValue(), t.getDueTime(), true)))).anyMatch();
+                    cmd.matcher().whenAny().asEntry((v) -> d.runLater.add(t -> t.setDueTime(TimePeriod.parseOpPeriodAsInstant(v.stringValue(), t.getDueTime(), true)))).anyMatch();
                     break;
                 }
                 case "--at": {
-                    cmd.matcher().withAny().matchEntry((v) -> d.runLater.add(t -> t.setDueTime(new TimeParser().setTimeOnly(true).parseInstant(v.stringValue(), false)))).anyMatch();
+                    cmd.matcher().whenAny().asEntry((v) -> d.runLater.add(t -> t.setDueTime(new TimeParser().setTimeOnly(true).parseInstant(v.stringValue(), false)))).anyMatch();
                     break;
                 }
                 case "--end": {
-                    cmd.matcher().withAny().matchEntry((v) -> d.runLater.add(t -> t.setEndTime(new TimeParser().parseInstant(v.stringValue(), false)))).anyMatch();
+                    cmd.matcher().whenAny().asEntry((v) -> d.runLater.add(t -> t.setEndTime(new TimeParser().parseInstant(v.stringValue(), false)))).anyMatch();
                     break;
                 }
                 case "--wip": {
-                    cmd.matcher().withAny().matchTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.WIP))).anyMatch();
+                    cmd.matcher().whenAny().asTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.WIP))).anyMatch();
                     break;
                 }
                 case "--done": {
-                    cmd.matcher().withAny().matchTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.DONE))).anyMatch();
+                    cmd.matcher().whenAny().asTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.DONE))).anyMatch();
                     break;
                 }
                 case "--cancel": {
-                    cmd.matcher().withAny().matchTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.CANCELLED))).anyMatch();
+                    cmd.matcher().whenAny().asTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.CANCELLED))).anyMatch();
                     break;
                 }
                 case "--todo": {
-                    cmd.matcher().withAny().matchTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.TODO))).anyMatch();
+                    cmd.matcher().whenAny().asTrueFlag((v) -> d.runLater.add(t -> t.setStatus(NTaskStatus.TODO))).anyMatch();
                     break;
                 }
                 case "--high": {
-                    cmd.matcher().withAny().matchTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.HIGH))).anyMatch();
+                    cmd.matcher().whenAny().asTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.HIGH))).anyMatch();
                     break;
                 }
                 case "--critical": {
-                    cmd.matcher().withAny().matchTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.CRITICAL))).anyMatch();
+                    cmd.matcher().whenAny().asTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.CRITICAL))).anyMatch();
                     break;
                 }
                 case "--normal": {
-                    cmd.matcher().withAny().matchTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.NORMAL))).anyMatch();
+                    cmd.matcher().whenAny().asTrueFlag((v) -> d.runLater.add(t -> t.setPriority(NPriority.NORMAL))).anyMatch();
                     break;
                 }
                 case "++P":
                 case "++prio":
                 case "--prio++": {
-                    cmd.matcher().withAny().matchTrueFlag((v) -> d.runLater.add(t -> t.setPriority((t.getPriority() == null ? NPriority.NORMAL : t.getPriority()).higher())))
+                    cmd.matcher().whenAny().asTrueFlag((v) -> d.runLater.add(t -> t.setPriority((t.getPriority() == null ? NPriority.NORMAL : t.getPriority()).higher())))
                             .anyMatch();
                     break;
                 }
                 case "--P":
                 case "--prio":
                 case "--prio--": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         if (!aa.key().equals("--prio")) {
                             v = null;
                         }
@@ -269,28 +269,28 @@ public class NTasksSubCmd {
                     break;
                 }
                 case "--status": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         d.runLater.add(t -> t.setStatus(NTaskStatus.parse(v.stringValue())));
                     }).anyMatch();
                     break;
                 }
                 case "-d":
                 case "--duration": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         d.runLater.add(t -> t.setDuration(TimePeriod.parse(v.stringValue(), false)));
                     }).anyMatch();
                     break;
                 }
                 case "-n":
                 case "--name": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         d.runLater.add(t -> t.setName(v.stringValue()));
                     }).anyMatch();
                     break;
                 }
                 case "-f":
                 case "--flag": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         NFlag f = NFlag.parse(v.stringValue());
                         d.runLater.add(t -> t.setFlag(f));
                     }).anyMatch();
@@ -298,7 +298,7 @@ public class NTasksSubCmd {
                 }
                 case "-j":
                 case "--job": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         NJob job = service.jobs().getJob(v.stringValue());
                         if (job == null) {
                             cmd.throwError(NMsg.ofC("invalid job %s", v));
@@ -309,7 +309,7 @@ public class NTasksSubCmd {
                 }
                 case "-T":
                 case "--parent": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         NTask parentTask = service.tasks().getTask(v.stringValue());
                         if (parentTask == null) {
                             cmd.throwError(NMsg.ofC("invalid parent task %s", v));
@@ -320,7 +320,7 @@ public class NTasksSubCmd {
                 }
                 case "-P":
                 case "--priority": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         d.runLater.add(t -> {
                             NPriority p = t.getPriority();
                             if (v.stringValue().equalsIgnoreCase("higher")) {
@@ -336,7 +336,7 @@ public class NTasksSubCmd {
                     break;
                 }
                 case "--for": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         d.runLater.add(t -> {
                             Instant u = TimePeriod.parseOpPeriodAsInstant(v.stringValue(), t.getDueTime(), true);
                             if (u != null) {
@@ -350,14 +350,14 @@ public class NTasksSubCmd {
                 }
                 case "-p":
                 case "--project": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         d.runLater.add(t -> t.setProject(v.stringValue()));
                     }).anyMatch();
                     break;
                 }
                 case "-o":
                 case "--obs": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         d.runLater.add(t -> t.setObservations(v.stringValue()));
                     }).anyMatch();
                     break;
@@ -365,7 +365,7 @@ public class NTasksSubCmd {
                 case "-o+":
                 case "--obs+":
                 case "+obs": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         d.runLater.add(t -> {
                             String so = t.getObservations();
                             if (so == null) {
@@ -455,7 +455,7 @@ public class NTasksSubCmd {
                 }
                 case "-u":
                 case "--unit": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         d.timeUnit = TimePeriod.parseUnit(v.stringValue(), false);
                     }).anyMatch();
                     break;
@@ -528,7 +528,7 @@ public class NTasksSubCmd {
                 }
                 case "--project":
                 case "-p": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         Predicate<String> sp = parent.createProjectFilter(v.stringValue());
                         Predicate<NTask> t = x -> sp.test(x.getProject());
                         d.whereFilter = parent.appendPredicate(d.whereFilter, t);
@@ -537,7 +537,7 @@ public class NTasksSubCmd {
                 }
                 case "-n":
                 case "--name": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         Predicate<String> sp = parent.createStringFilter(v.stringValue());
                         Predicate<NTask> t = x -> sp.test(x.getName());
                         d.whereFilter = parent.appendPredicate(d.whereFilter, t);
@@ -546,7 +546,7 @@ public class NTasksSubCmd {
                 }
                 case "-b":
                 case "--beneficiary": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         Predicate<String> sp = parent.createStringFilter(v.stringValue());
                         Predicate<NTask> t = x -> {
                             NProject project = service.projects().getProject(x.getProject());
@@ -558,7 +558,7 @@ public class NTasksSubCmd {
                 }
                 case "-c":
                 case "--company": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         Predicate<String> sp = parent.createStringFilter(v.stringValue());
                         Predicate<NTask> t = x -> {
                             NProject project = service.projects().getProject(x.getProject());
@@ -570,7 +570,7 @@ public class NTasksSubCmd {
                 }
                 case "-d":
                 case "--duration": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         Predicate<TimePeriod> p = TimePeriod.parseFilter(v.stringValue(), false);
                         Predicate<NTask> t = x -> p.test(x.getDuration());
                         d.whereFilter = parent.appendPredicate(d.whereFilter, t);
@@ -580,7 +580,7 @@ public class NTasksSubCmd {
                 case "-t":
                 case "--startTime":
                 case "--start-time": {
-                    cmd.matcher().withAny().matchEntry((v) -> {
+                    cmd.matcher().whenAny().asEntry((v) -> {
                         Predicate<Instant> t = new TimeParser().parseInstantFilter(v.stringValue(), false);
                         d.whereFilter = parent.appendPredicate(d.whereFilter, x -> t.test(x.getStartTime()));
                     }).anyMatch();
