@@ -26,9 +26,9 @@ import java.util.stream.Stream;
 
 public class NTasksSubCmd {
 
-    private JobService service;
+    private final JobService service;
     private NSession session;
-    private JobServiceCmd parent;
+    private final JobServiceCmd parent;
 
     public NTasksSubCmd(JobServiceCmd parent) {
         this.parent = parent;
@@ -180,10 +180,10 @@ public class NTasksSubCmd {
 
     public void runTaskUpdate(NCmdLine cmd) {
         class Data {
-            List<NTask> tasks = new ArrayList<>();
+            final List<NTask> tasks = new ArrayList<>();
             boolean list = false;
             boolean show = false;
-            List<Consumer<NTask>> runLater = new ArrayList<>();
+            final List<Consumer<NTask>> runLater = new ArrayList<>();
         }
         Data d = new Data();
         while (cmd.hasNext()) {
@@ -424,7 +424,7 @@ public class NTasksSubCmd {
 
     private void runTaskList(NCmdLine cmd) {
         class Data {
-            TimespanPattern hoursPerDay = TimespanPattern.WORK;
+            final TimespanPattern hoursPerDay = TimespanPattern.WORK;
             int count = 100;
             NJobGroup groupBy = null;
             ChronoUnit countType = null;
@@ -616,7 +616,7 @@ public class NTasksSubCmd {
         }
     }
 
-    private NText[] toTaskRowArray(NTask x, String index) {
+    private NTableCell[] toTaskRowArray(NTask x, String index) {
         String project = x.getProject();
         NProject p = project == null ? null : service.projects().getProject(project);
         NTaskStatus s = x.getStatus();
@@ -630,15 +630,15 @@ public class NTasksSubCmd {
             dte.append(dte0, NTextStyle.keyword(2));
         }
         String projectName = p != null ? p.getName() : project != null ? project : "*";
-        return new NText[]{
-                NText.of(index),
-                NTextBuilder.of().append(x.getId(), NTextStyle.pale()),
-                NText.of(parent.getFlagString(x.getFlag())),
-                NText.of(parent.getStatusString(x.getStatus())),
-                NText.of(parent.getPriorityString(x.getPriority())),
-                dte.build(),
-                parent.getFormattedProject(projectName),
-                NText.of(x.getName())
+        return new NTableCell[]{
+                NTableCell.of(NText.of(index)),
+                NTableCell.of(NTextBuilder.of().append(x.getId(), NTextStyle.pale())),
+                NTableCell.of(NText.of(parent.getFlagString(x.getFlag()))),
+                NTableCell.of(NText.of(parent.getStatusString(x.getStatus()))),
+                NTableCell.of(NText.of(parent.getPriorityString(x.getPriority()))),
+                NTableCell.of(dte.build()),
+                NTableCell.of(parent.getFormattedProject(projectName)),
+                NTableCell.of(NText.of(x.getName()))
         };
     }
 

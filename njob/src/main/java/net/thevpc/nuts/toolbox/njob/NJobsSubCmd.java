@@ -4,14 +4,10 @@ import net.thevpc.nuts.cmdline.NArg;
 import net.thevpc.nuts.cmdline.NCmdLine;
 import net.thevpc.nuts.core.NSession;
 import net.thevpc.nuts.io.NOut;
-import net.thevpc.nuts.text.NMutableTableModel;
+import net.thevpc.nuts.text.*;
 import net.thevpc.nuts.io.NPrintStream;
-import net.thevpc.nuts.text.NText;
-import net.thevpc.nuts.text.NTextArt;
-import net.thevpc.nuts.text.NTextStyle;
 import net.thevpc.nuts.toolbox.njob.model.*;
 import net.thevpc.nuts.toolbox.njob.time.*;
-import net.thevpc.nuts.text.NMsg;
 import net.thevpc.nuts.util.NRef;
 
 import java.time.Instant;
@@ -43,39 +39,39 @@ public class NJobsSubCmd {
             switch (aa.key()) {
                 case "--list":
                 case "-l": {
-                    cmd.matcher().whenAny().asFlag((v)->list.set(true)).anyMatch();
+                    cmd.matcher().whenAny().asFlag((v) -> list.set(true)).anyMatch();
                     break;
                 }
                 case "--show":
                 case "-s": {
-                    cmd.matcher().whenAny().asFlag((v)->show.set(true)).anyMatch();
+                    cmd.matcher().whenAny().asFlag((v) -> show.set(true)).anyMatch();
                     break;
                 }
                 case "--time":
                 case "--on":
                 case "--start":
                 case "-t": {
-                    cmd.matcher().whenAny().asEntry((v)->t.setStartTime(new TimeParser().parseInstant(v.stringValue(), false))).anyMatch();
+                    cmd.matcher().whenAny().asEntry((v) -> t.setStartTime(new TimeParser().parseInstant(v.stringValue(), false))).anyMatch();
                     break;
                 }
                 case "--at": {
-                    cmd.matcher().whenAny().asEntry((v)->t.setStartTime(new TimeParser().setTimeOnly(true).parseInstant(v.stringValue(), false))).anyMatch();
+                    cmd.matcher().whenAny().asEntry((v) -> t.setStartTime(new TimeParser().setTimeOnly(true).parseInstant(v.stringValue(), false))).anyMatch();
                     break;
                 }
                 case "--for":
                 case "--project":
                 case "-p": {
-                    cmd.matcher().whenAny().asEntry((v)->t.setProject(v.stringValue())).anyMatch();
+                    cmd.matcher().whenAny().asEntry((v) -> t.setProject(v.stringValue())).anyMatch();
                     break;
                 }
                 case "--obs":
                 case "-o": {
-                    cmd.matcher().whenAny().asEntry((v)->t.setObservations(v.stringValue())).anyMatch();
+                    cmd.matcher().whenAny().asEntry((v) -> t.setObservations(v.stringValue())).anyMatch();
                     break;
                 }
                 case "--duration":
                 case "-d": {
-                    cmd.matcher().whenAny().asEntry((v)->t.setDuration(TimePeriod.parse(v.stringValue(), false))).anyMatch();
+                    cmd.matcher().whenAny().asEntry((v) -> t.setDuration(TimePeriod.parse(v.stringValue(), false))).anyMatch();
                     break;
                 }
                 default: {
@@ -110,7 +106,7 @@ public class NJobsSubCmd {
 
     public void runJobUpdate(NCmdLine cmd) {
         class Data {
-            List<NJob> jobs = new ArrayList<>();
+            final List<NJob> jobs = new ArrayList<>();
             boolean list = false;
             boolean show = false;
         }
@@ -324,7 +320,7 @@ public class NJobsSubCmd {
 
     private void runJobList(NCmdLine cmd) {
         class Data {
-            TimespanPattern hoursPerDay = TimespanPattern.WORK;
+            final TimespanPattern hoursPerDay = TimespanPattern.WORK;
             int count = 100;
             NJobGroup groupBy = null;
             ChronoUnit countType = null;
@@ -475,20 +471,20 @@ public class NJobsSubCmd {
                     lastResults.add(x);
                     m.newRow().addCells(
                             (finalGroupBy != null)
-                                    ? new NText[]{
-                                    NText.of(parent.createHashId(index[0], -1)),
-                                    NText.of(parent.getFormattedDate(x.getStartTime())),
-                                    NText.of(durationString),
-                                    parent.getFormattedProject(x.getProject() == null ? "*" : x.getProject()),
-                                    NText.of(x.getName())
+                                    ? new NTableCell[]{
+                                    NTableCell.of(NText.of(parent.createHashId(index[0], -1))),
+                                    NTableCell.of(NText.of(parent.getFormattedDate(x.getStartTime()))),
+                                    NTableCell.of(NText.of(durationString)),
+                                    NTableCell.of(parent.getFormattedProject(x.getProject() == null ? "*" : x.getProject())),
+                                    NTableCell.of(NText.of(x.getName()))
 
-                            } : new NText[]{
-                                    NText.of(parent.createHashId(index[0], -1)),
-                                    NText.ofStyled(x.getId(), NTextStyle.pale()),
-                                    NText.of(parent.getFormattedDate(x.getStartTime())),
-                                    NText.of(durationString),
-                                    parent.getFormattedProject(x.getProject() == null ? "*" : x.getProject()),
-                                    NText.of(x.getName())
+                            } : new NTableCell[]{
+                                    NTableCell.of(NText.of(parent.createHashId(index[0], -1))),
+                                    NTableCell.of(NText.ofStyled(x.getId(), NTextStyle.pale())),
+                                    NTableCell.of(NText.of(parent.getFormattedDate(x.getStartTime()))),
+                                    NTableCell.of(NText.of(durationString)),
+                                    NTableCell.of(parent.getFormattedProject(x.getProject() == null ? "*" : x.getProject())),
+                                    NTableCell.of(NText.of(x.getName()))
                             }
                     );
                 });

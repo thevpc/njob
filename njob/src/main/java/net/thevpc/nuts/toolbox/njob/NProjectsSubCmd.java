@@ -4,15 +4,11 @@ import net.thevpc.nuts.cmdline.NArg;
 import net.thevpc.nuts.cmdline.NCmdLine;
 import net.thevpc.nuts.core.NSession;
 import net.thevpc.nuts.io.NOut;
-import net.thevpc.nuts.text.NMutableTableModel;
+import net.thevpc.nuts.text.*;
 import net.thevpc.nuts.io.NPrintStream;
-import net.thevpc.nuts.text.NText;
-import net.thevpc.nuts.text.NTextArt;
-import net.thevpc.nuts.text.NTextStyle;
 import net.thevpc.nuts.toolbox.njob.model.NProject;
 import net.thevpc.nuts.toolbox.njob.time.TimeParser;
 import net.thevpc.nuts.toolbox.njob.time.WeekDay;
-import net.thevpc.nuts.text.NMsg;
 import net.thevpc.nuts.util.NRef;
 
 import java.time.Instant;
@@ -28,9 +24,9 @@ import java.util.stream.Stream;
 
 public class NProjectsSubCmd {
 
-    private JobService service;
+    private final JobService service;
     private NSession session;
-    private JobServiceCmd parent;
+    private final JobServiceCmd parent;
 
     public NProjectsSubCmd(JobServiceCmd parent) {
         this.parent = parent;
@@ -120,11 +116,11 @@ public class NProjectsSubCmd {
 
     public void runProjectUpdate(NCmdLine cmd) {
         class Data {
-            List<NProject> projects = new ArrayList<>();
+            final List<NProject> projects = new ArrayList<>();
             boolean list = false;
             boolean show = false;
             String mergeTo = null;
-            List<Consumer<NProject>> runLater = new ArrayList<>();
+            final List<Consumer<NProject>> runLater = new ArrayList<>();
         }
         Data d = new Data();
         while (cmd.hasNext()) {
@@ -330,12 +326,12 @@ public class NProjectsSubCmd {
                     lastResults.add(x);
                     index[0]++;
                     m.newRow().addCells(
-                            NText.of(parent.createHashId(index[0], -1)),
-                                    NText.of(x.getId()),
-                                            NText.of(sts),
-                                                    NText.of(x.getCompany()),
-                                                            NText.of(x.getBeneficiary()),
-                            parent.getFormattedProject(x.getName() == null ? "*" : x.getName())
+                            NTableCell.of(NText.of(parent.createHashId(index[0], -1))),
+                            NTableCell.of(NText.of(x.getId())),
+                            NTableCell.of(NText.of(sts)),
+                            NTableCell.of(NText.of(x.getCompany())),
+                            NTableCell.of(NText.of(x.getBeneficiary())),
+                            NTableCell.of(parent.getFormattedProject(x.getName() == null ? "*" : x.getName()))
                     );
                 });
                 NSession.of().setProperty("LastResults", lastResults.toArray(new NProject[0]));
