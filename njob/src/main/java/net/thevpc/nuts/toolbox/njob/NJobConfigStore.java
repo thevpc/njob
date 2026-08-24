@@ -1,6 +1,6 @@
 package net.thevpc.nuts.toolbox.njob;
 
-import net.thevpc.nuts.app.NApp;
+import net.thevpc.nuts.app.NApplication;
 import net.thevpc.nuts.core.NSession;
 import net.thevpc.nuts.elem.NDescribables;
 import net.thevpc.nuts.elem.NElementReader;
@@ -23,7 +23,7 @@ public class NJobConfigStore {
 
     public NJobConfigStore(NSession session) {
         //ensure we always consider the latest config version
-        dbPath = NApp.of().getVersionFolder(NStoreType.CONF, NJobConfigVersions.CURRENT)
+        dbPath = NApplication.of().getVersionFolder(NStoreType.CONF, NJobConfigVersions.CURRENT)
                 .resolve("db");
     }
 

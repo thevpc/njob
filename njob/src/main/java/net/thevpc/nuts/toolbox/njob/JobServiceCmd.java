@@ -1,6 +1,6 @@
 package net.thevpc.nuts.toolbox.njob;
 
-import net.thevpc.nuts.app.NApp;
+import net.thevpc.nuts.app.NApplication;
 import net.thevpc.nuts.artifact.NId;
 import net.thevpc.nuts.cmdline.NCmdLine;
 import net.thevpc.nuts.cmdline.NCmdLineHistory;
@@ -309,7 +309,7 @@ public class JobServiceCmd {
                 .commandAutoCompleteResolver(new JobCompleter(session.workspace()))
                 .commandHistory(
                         NCmdLineHistory.of()
-                                .path(NApp.of().varFolder().resolve("njob-history.hist"))
+                                .path(NApplication.of().varFolder().resolve("njob-history.hist"))
                 );
         NWorkspace.of().setProperty(JobServiceCmd.class.getName(), this);
 
@@ -318,7 +318,7 @@ public class JobServiceCmd {
 //                session.io().term().getSystemTerminal(), 
 //                        session
 //        ));
-        NId appId = NApp.of().id().get();
+        NId appId = NApplication.of().id().get();
         NOut.print(NMsg.ofC(
                 "%s interactive mode. type %s to quit.%n",
                 NText.ofStyled(appId.artifactId() + " " + appId.version(), NTextStyle.primary1()),

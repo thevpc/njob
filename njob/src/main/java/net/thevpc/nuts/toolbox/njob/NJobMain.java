@@ -1,25 +1,25 @@
 package net.thevpc.nuts.toolbox.njob;
 
+import net.thevpc.nuts.app.NApplication;
 import net.thevpc.nuts.app.NApp;
-import net.thevpc.nuts.app.NAppDefinition;
-import net.thevpc.nuts.app.NAppRunner;
+import net.thevpc.nuts.app.NAppRun;
 import net.thevpc.nuts.cmdline.NArg;
 import net.thevpc.nuts.cmdline.NCmdLine;
 import net.thevpc.nuts.core.NSession;
 
-@NAppDefinition
+@NApp
 public class NJobMain {
 
 
     public static void main(String[] args) {
-        NApp.builder(args).run();
+        NApplication.builder(args).run();
     }
 
-    @NAppRunner
+    @NAppRun
     public void run() {
         NSession session = NSession.of();
         JobServiceCmd ts = new JobServiceCmd(session);
-        NCmdLine cmdLine = NApp.of().cmdLine();
+        NCmdLine cmdLine = NApplication.of().cmdLine();
         NArg a;
         while(!cmdLine.isEmpty()) {
             if (session.configureFirst(cmdLine)) {
