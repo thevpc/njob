@@ -521,7 +521,7 @@ public class NTasksSubCmd {
                             break;
                         }
                         default: {
-                            cmd.pushBack(y).throwUnexpectedArgument(NMsg.ofPlain("invalid value"));
+                            cmd.pushBack(y).throwUnexpectedArgument(NMsg.ofP("invalid value"));
                         }
                     }
                     break;

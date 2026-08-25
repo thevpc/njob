@@ -386,7 +386,7 @@ public class NJobsSubCmd {
                                 break;
                             }
                             default: {
-                                cmd.pushBack(v).throwUnexpectedArgument(NMsg.ofPlain("invalid value"));
+                                cmd.pushBack(v).throwUnexpectedArgument(NMsg.ofP("invalid value"));
                             }
                         }
                     }).anyMatch();

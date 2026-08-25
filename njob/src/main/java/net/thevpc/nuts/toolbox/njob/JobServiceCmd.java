@@ -329,7 +329,7 @@ public class JobServiceCmd {
         while (true) {
             String line = null;
             try {
-                line = session.terminal().readLine(NMsg.ofPlain("> "));
+                line = session.terminal().readLine(NMsg.ofP("> "));
             } catch (NoSuchElementException e) {
             }
             if (line == null) {

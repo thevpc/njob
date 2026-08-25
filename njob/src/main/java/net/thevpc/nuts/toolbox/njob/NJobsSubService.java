@@ -226,7 +226,7 @@ public class NJobsSubService {
         if (count > 1) {
             throw new NIllegalArgumentException(NMsg.ofC("job is used in %d tasks. It cannot be removed.",count));
         } else if (count > 0) {
-            throw new NIllegalArgumentException(NMsg.ofPlain("job is used in one task. It cannot be removed."));
+            throw new NIllegalArgumentException(NMsg.ofP("job is used in one task. It cannot be removed."));
         }
         return dal.delete(NJob.class, jobId);
     }

@@ -28,7 +28,7 @@ public class NProjectsSubService {
     public void addProject(NProject p) {
         String name = p.getName();
         if (name == null) {
-            throw new NIllegalArgumentException(NMsg.ofPlain("invalid project"));
+            throw new NIllegalArgumentException(NMsg.ofP("invalid project"));
         }
         p.setId(null);
         NProject p0 = getProject(name);
@@ -66,7 +66,7 @@ public class NProjectsSubService {
     public void updateProject(NProject p) {
         String name = p.getName();
         if (name == null) {
-            throw new NIllegalArgumentException(NMsg.ofPlain("invalid project"));
+            throw new NIllegalArgumentException(NMsg.ofP("invalid project"));
         }
         String id = p.getId();
         if (id == null) {

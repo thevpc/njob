@@ -286,7 +286,7 @@ public class NTasksSubService {
         if (count > 1) {
             throw new NIllegalArgumentException(NMsg.ofC("Task is used in %d tasks. It cannot be removed.",count));
         } else if (count > 0) {
-            throw new NIllegalArgumentException(NMsg.ofPlain("Task is used in one task. It cannot be removed."));
+            throw new NIllegalArgumentException(NMsg.ofP("Task is used in one task. It cannot be removed."));
         }
         return dal.delete(NTask.class, taskId);
     }
