@@ -117,7 +117,7 @@ public class JobServiceCmd {
     protected void showCustomHelp(String name) {
         NPath p = NPath.of("classpath:/net/thevpc/nuts/toolbox/" + name + ".ntf");
         NOut.println(
-                NText.transform(NTextParser.of().parse(p), new NTextTransformConfig()
+                NTextParser.of().parse(p).transform(new NTextTransformConfig()
                         .currentDir(p.parent())
                         .importClassLoader(getClass().getClassLoader())
                         .rootLevel(1)
