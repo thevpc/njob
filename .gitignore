@@ -1,1 +1,4 @@
 njob/target
+
+# Maven build output
+target/
